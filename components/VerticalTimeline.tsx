@@ -13,20 +13,28 @@ import { getAllMilestones, saveMilestone, deleteMilestone as removeFromStorage }
 
 const initialMilestones: Milestone[] = [
     {
-        date: "2023-11-12",
+        date: "2024-11-12",
         title: "降临人间",
         description: "一个小奇迹诞生了，永远改变了我们的世界。欢迎回家，亲爱的小宝贝。",
-        imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNfCrvxDWC1ejaJJU0dJn9MIfDsf2AcoZ0G5xbYkpyd7HJlHQ5WNKzFyzS1o8fz1nvJ47cwRB6yJCC6eVfRGyiAHZSVHHEYfbbRRGhm1clDTlxS5XO7I_0Cf95Md9EtkFiGBDPTDxMHG6rIl0e0rK-CYnh2vUCpRp1cmNl_OzMp1GZ4JwtUj691B2JwMWlTe-tIVBGb5sLegC9fXDyXPlcpoNw9dize9rhMO7hyLopWPIN_nhWfIOzZrUAaxli5YC_iASQeAHdtR"],
-        reverse: false,
-        delay: "0s"
+        imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNfCrvxDWC1ejaJJU0dJn9MIfDsf2AcoZ0G5xbYkpyd7HJlHQ5WNKzFyzS1o8fz1nvJ47cwRB6yJCC6eVfRGyiAHZSVHHEYfbbRRGhm1clDTlxS5XO7I_0Cf95Md9EtkFiGBDPTDxMHG6rIl0e0rK-CYnh2vUCqRp1cmNl_OzMp1GZ4JwtUj691B2JwMWlTe-tIVBGb5sLegC9fXDyXPlcpoNw9dize9rhMO7hyLopWPIN_nhWfIOqZrUAaxli5YC_iASQeAHdtR"],
     },
     {
-        date: "2024-1-20",
+        date: "2025-1-20",
         title: "第一次甜美微笑",
         description: "天空中最明亮的星。只要看你一眼，整个世界都变得灿烂。",
         imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuB37ZJ3FEEfESQSp6I9q4A8bbj4w8fomkRQIJfoqrYoQKAnjI9gWXa5cJe0lJHHFTQQqDYm987JB83R5ssiXi4zOyeFzUVIKpV1SrJ_dsKawh2e8qPRoaAzVlWgoWmjJiKKjkv8icJAbiwFAaGNA5uSlR_lQlX-Cp2tibhlCOmT5F_lsqnWgJ_D6UB0RRVYHIIgupfnMTa46nJudsH9KcoJ62B3POZvCMAyG9Ntc5bEKTw6Zfr2r4pJmLcrjmi3d1N0bk998OQ398H-"],
-        reverse: true,
-        delay: "1s"
+    },
+    {
+        date: "2025-5-15",
+        title: "好奇的小探险家",
+        description: "蹒跚学步，满怀憧憬。千云之行，始于足下。",
+        imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuC-Yt4X-j9aGZp1iKBZjIDiQbDMoSNhQ-Aqa9Hq8UsDyuybVSMpNlUwAEoA7a_NbU3yMCxxvxtDdTvVE1PFT6FZ-YDLcwA6K2hof9I1H8B4ec-m0zrmHZzT7M9NBPRr9nxHxmKwtebjeCbpb7YtvJrA2kLv2VVuel2C6nQ9h0q6HQv9ZE7dFceNPh6N34Y28H5MOB1A_txsfL1N6IdX05sLm32YE2ZWdJv1pz4EzNrgYKjs8mKAZnd110Ez_0H3IFg0gApGp4osZ5zI"],
+    },
+    {
+        date: "2025-11-12",
+        title: "第一个生日愿望",
+        description: "一年的奇迹，一年的爱。你已经飞得这么高了！",
+        imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuCjq4c34iOEZjBwjdAP3KYoqrFJmp9n57L7Uv9eVP8DIGdyXBWPfjOemXftt8uJ8cMj2DChxi33uHeB31FbGLLWINBbT219OBqYOrEhqtw2qe17Oh0kkg2Occ5pR5HlKFPDNU3K_dIGXyjwzNhs-9kDsUoagvRxUgLWTpFBQGaaSWMfhSRji9tajo8K2h78Qn1o1RRB0gLSGfF6E_z6LNOefPx_LzenQmTapA-d32zbiYBd4h0ssCjDrucMvRQfLebLzfgZp_q8pDr8"],
     }
 ];
 
