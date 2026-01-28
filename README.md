@@ -1,20 +1,179 @@
 <div align="center">
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+
+# 🎈 Stellar Baby Journey
+
+**一个梦幻星空主题的宝宝成长记录应用**
+
+记录每一个珍贵瞬间，见证宝宝的成长轨迹
+
 </div>
 
-# Run and deploy your AI Studio app
+---
 
-This contains everything you need to run your app locally.
+## ✨ 项目简介
 
-View your app in AI Studio: https://ai.studio/apps/temp/1
+Stellar Baby Journey 是一个精心设计的宝宝成长记录应用，采用星空与云朵主题，提供多种视觉化方式来记录和展示宝宝的成长里程碑。应用支持本地数据存储，无需服务器，所有数据安全保存在浏览器中。
 
-## Run Locally
+## 🌟 核心功能
 
-**Prerequisites:**  Node.js
+### 📅 多维度时间轴展示
+- **垂直时间轴**: 经典的纵向滚动视图，适合详细浏览每个里程碑
+- **横向时间轴**: 视差滚动效果，提供沉浸式的时间旅行体验
+- **时光导航**: 按年份和月份快速筛选和定位记录
 
+### 📖 成长档案系统
+- **里程碑记录**: 记录宝宝的第一次微笑、第一次翻身等重要时刻
+- **多图片支持**: 每个里程碑可添加多张照片
+- **分类标签**: 支持身体发育、技能习得、第一次等分类
+- **成长数据**: 记录身高、体重、睡眠时长、牙齿数量等量化指标
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 📊 数据可视化
+- **成长曲线图**: 动态展示身高体重变化趋势
+- **交互式图表**: 悬停查看具体数据点
+- **双轴对比**: 同时展示身高和体重的发展曲线
+
+### 🎨 精美界面设计
+- **水彩背景**: 柔和的渐变色彩营造温馨氛围
+- **视差动画**: 云朵、羽毛、星星随滚动产生层次感
+- **响应式布局**: 完美适配桌面端和移动端
+- **心形模式**: 特殊的爱心动画效果
+- **背景音乐**: 内置舒缓音乐播放器
+
+### 💾 数据管理
+- **本地存储**: 使用 IndexedDB 存储所有数据
+- **图片压缩**: 自动压缩上传的图片以节省空间
+- **导入导出**: 支持数据备份和迁移
+- **离线可用**: 无需网络连接即可使用
+
+## 🚀 快速开始
+
+### 环境要求
+- Node.js (推荐 v16 或更高版本)
+- 现代浏览器 (Chrome, Firefox, Safari, Edge)
+
+### 安装步骤
+
+1. **克隆项目**
+```bash
+git clone <repository-url>
+cd stellar-baby-journey
+```
+
+2. **安装依赖**
+```bash
+npm install
+```
+
+3. **启动开发服务器**
+```bash
+npm run dev
+```
+
+4. **访问应用**
+打开浏览器访问 `http://localhost:5173`
+
+### 构建生产版本
+
+```bash
+npm run build
+```
+
+构建产物将生成在 `dist` 目录，可直接部署到静态服务器。
+
+## 📁 项目结构
+
+```
+stellar-baby-journey/
+├── components/              # React 组件
+│   ├── VerticalTimeline.tsx    # 垂直时间轴
+│   ├── HorizontalTimeline.tsx  # 横向时间轴
+│   ├── GrowthArchive.tsx       # 成长档案
+│   ├── GrowthChart.tsx         # 成长曲线图
+│   ├── MemoryBook.tsx          # 记忆相册
+│   ├── TimePortal.tsx          # 时光导航
+│   ├── CloudBackground.tsx     # 云朵背景动画
+│   ├── MusicPlayer.tsx         # 音乐播放器
+│   └── ...                     # 其他组件
+├── utils/
+│   └── storage.ts           # IndexedDB 数据存储
+├── public/
+│   └── music/              # 背景音乐文件
+├── types.ts                # TypeScript 类型定义
+├── App.tsx                 # 应用主入口
+└── index.tsx              # React 渲染入口
+```
+
+## 🎯 使用指南
+
+### 添加里程碑
+1. 点击页面底部的 "+" 按钮
+2. 填写日期、标题、描述等信息
+3. 上传相关照片（支持多张）
+4. 选择分类标签
+5. 保存记录
+
+### 记录成长数据
+1. 进入"成长档案"页面
+2. 点击"添加记录"
+3. 输入身高、体重、睡眠时长等数据
+4. 查看自动生成的成长曲线
+
+### 浏览记忆
+- 使用时光导航按钮筛选特定年份或月份
+- 在垂直/横向时间轴间切换视图
+- 点击任意里程碑查看详细信息
+- 在记忆相册中以网格形式浏览所有照片
+
+### 数据备份
+1. 进入"成长档案"页面
+2. 点击"导出数据"按钮
+3. 保存 JSON 文件到本地
+4. 需要恢复时使用"导入数据"功能
+
+## 🛠️ 技术栈
+
+- **前端框架**: React 19.2.4
+- **路由管理**: React Router DOM 7.13.0
+- **构建工具**: Vite 6.2.0
+- **语言**: TypeScript 5.8.2
+- **数据存储**: IndexedDB (浏览器原生)
+- **样式方案**: Tailwind CSS (通过配置)
+- **图标**: Material Symbols
+
+## 🎨 设计特色
+
+- **水彩风格**: 柔和的粉色和蓝色渐变
+- **视差滚动**: 多层次的动画效果
+- **流畅动画**: 使用 CSS 动画和过渡
+- **响应式设计**: 移动端优先的布局策略
+- **无障碍支持**: 语义化 HTML 和键盘导航
+
+## 📱 浏览器兼容性
+
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- 移动端浏览器 (iOS Safari, Chrome Mobile)
+
+## 🤝 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📄 开源协议
+
+本项目采用 MIT 协议开源
+
+## 💝 致谢
+
+感谢所有为宝宝成长记录付出爱心的父母们
+
+---
+
+<div align="center">
+
+**用爱记录，用心陪伴** ❤️
+
+Made with 💖 for every precious moment
+
+</div>
