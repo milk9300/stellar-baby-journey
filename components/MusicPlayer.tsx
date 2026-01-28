@@ -22,7 +22,7 @@ const PLAYLIST = [
 ];
 
 const MusicPlayer: React.FC = () => {
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
     const [currentTrackIndex, setCurrentTrackIndex] = useState(() => Math.floor(Math.random() * PLAYLIST.length));
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -44,7 +44,9 @@ const MusicPlayer: React.FC = () => {
         };
 
         if (isPlaying) {
-            audioRef.current.play().catch(err => console.warn(err));
+            audioRef.current.play().catch(err => {
+                console.warn("Autoplay blocked, waiting for interaction...", err);
+            });
         }
 
         return () => {
@@ -54,6 +56,28 @@ const MusicPlayer: React.FC = () => {
             }
         };
     }, [currentTrackIndex]);
+
+    // Handle browser autoplay restrictions by listening for first interaction
+    useEffect(() => {
+        const handleInteraction = () => {
+            if (isPlaying && audioRef.current && audioRef.current.paused) {
+                audioRef.current.play().catch(err => console.warn("Playback failed on interaction:", err));
+            }
+            // Once we've attempted to play on interaction, we can remove the listeners
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('touchstart', handleInteraction);
+        };
+
+        if (isPlaying) {
+            window.addEventListener('click', handleInteraction);
+            window.addEventListener('touchstart', handleInteraction);
+        }
+
+        return () => {
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('touchstart', handleInteraction);
+        };
+    }, [isPlaying]);
 
     const togglePlay = () => {
         if (!audioRef.current) return;
@@ -69,11 +93,11 @@ const MusicPlayer: React.FC = () => {
     };
 
     return (
-        <div className="fixed bottom-10 right-10 z-[1000] flex flex-col items-end">
+        <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[1000] flex flex-col items-end">
             {/* Main Toggle Button */}
             <div className="relative group">
-                {/* Tooltip for current track */}
-                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-4 py-2 bg-white/70 backdrop-blur-md rounded-full border border-white/60 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                {/* Tooltip for current track - hidden on mobile */}
+                <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-4 py-2 bg-white/70 backdrop-blur-md rounded-full border border-white/60 shadow-xl opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden md:block">
                     <span className="text-primary font-serif italic text-sm tracking-widest">
                         正在播放: {PLAYLIST[currentTrackIndex].name}
                     </span>
@@ -81,14 +105,14 @@ const MusicPlayer: React.FC = () => {
 
                 <button
                     onClick={togglePlay}
-                    className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl border-2 ${isPlaying
+                    className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl border-2 ${isPlaying
                         ? 'bg-white border-[#dfc9a6] text-[#c5a059]'
                         : 'bg-white/40 backdrop-blur-md border-white/60 text-[#dfc9a6] hover:bg-white/60'
                         }`}
                     title={isPlaying ? "暂停配乐" : "播放配乐"}
                 >
                     <div className={`relative flex items-center justify-center ${isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''}`}>
-                        <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+                        <span className="material-symbols-outlined text-2xl md:text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
                             music_note
                         </span>
                         {isPlaying && (

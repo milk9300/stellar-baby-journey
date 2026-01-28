@@ -13,7 +13,7 @@ import { getAllMilestones, saveMilestone, deleteMilestone as removeFromStorage }
 
 const initialMilestones: Milestone[] = [
     {
-        date: "2023年11月12日",
+        date: "2023-11-12",
         title: "降临人间",
         description: "一个小奇迹诞生了，永远改变了我们的世界。欢迎回家，亲爱的小宝贝。",
         imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuCoVNfCrvxDWC1ejaJJU0dJn9MIfDsf2AcoZ0G5xbYkpyd7HJlHQ5WNKzFyzS1o8fz1nvJ47cwRB6yJCC6eVfRGyiAHZSVHHEYfbbRRGhm1clDTlxS5XO7I_0Cf95Md9EtkFiGBDPTDxMHG6rIl0e0rK-CYnh2vUCpRp1cmNl_OzMp1GZ4JwtUj691B2JwMWlTe-tIVBGb5sLegC9fXDyXPlcpoNw9dize9rhMO7hyLopWPIN_nhWfIOzZrUAaxli5YC_iASQeAHdtR"],
@@ -21,7 +21,7 @@ const initialMilestones: Milestone[] = [
         delay: "0s"
     },
     {
-        date: "2024年1月20日",
+        date: "2024-1-20",
         title: "第一次甜美微笑",
         description: "天空中最明亮的星。只要看你一眼，整个世界都变得灿烂。",
         imgs: ["https://lh3.googleusercontent.com/aida-public/AB6AXuB37ZJ3FEEfESQSp6I9q4A8bbj4w8fomkRQIJfoqrYoQKAnjI9gWXa5cJe0lJHHFTQQqDYm987JB83R5ssiXi4zOyeFzUVIKpV1SrJ_dsKawh2e8qPRoaAzVlWgoWmjJiKKjkv8icJAbiwFAaGNA5uSlR_lQlX-Cp2tibhlCOmT5F_lsqnWgJ_D6UB0RRVYHIIgupfnMTa46nJudsH9KcoJ62B3POZvCMAyG9Ntc5bEKTw6Zfr2r4pJmLcrjmi3d1N0bk998OQ398H-"],
@@ -35,7 +35,6 @@ const VerticalTimeline: React.FC = () => {
     const [milestones, setMilestones] = useState<Milestone[]>([]);
     const [isEditorOpen, setIsEditorOpen] = useState(false);
     const [editingMilestone, setEditingMilestone] = useState<Milestone | null>(null);
-    const [isManagementMode, setIsManagementMode] = useState(false);
     const [filter, setFilter] = useState<{ year: number | null, month: number | null }>({ year: null, month: null });
 
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -119,20 +118,6 @@ const VerticalTimeline: React.FC = () => {
         }
     };
 
-    const handleDelete = (id: number) => {
-        setDeletingId(id);
-        setIsConfirmOpen(true);
-    };
-
-    const confirmDelete = async () => {
-        if (deletingId !== null) {
-            await removeFromStorage(deletingId);
-            loadData();
-        }
-        setIsConfirmOpen(false);
-        setDeletingId(null);
-    };
-
     const handleFilterChange = (year: number | null, month: number | null) => {
         setFilter({ year, month });
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -170,12 +155,12 @@ const VerticalTimeline: React.FC = () => {
     const displayMilestones = [...filteredMilestones].reverse();
 
     return (
-        <div className="relative min-h-screen bg-transparent">
+        <div className="relative min-h-screen bg-transparent overflow-x-hidden">
             <CloudBackground />
             <CursorFollower progress={pressProgress} isActive={!!pressingId} />
             <Navbar title="伊芙琳的成长日记" />
 
-            <div className="fixed left-8 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-4">
+            <div className="fixed left-4 bottom-24 md:left-8 md:top-1/2 md:-translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-4">
                 <button
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     className="group flex flex-col items-center gap-2 mb-4 hover:scale-110 transition-all"
@@ -209,30 +194,12 @@ const VerticalTimeline: React.FC = () => {
                 </button>
             </div>
 
-            <div className="fixed top-8 left-8 z-50 flex flex-col items-start gap-2">
-                <div className="flex items-center gap-3 bg-white/80 backdrop-blur-md px-5 py-3 rounded-full shadow-xl border border-primary/20 transition-all hover:bg-white/95">
-                    <span className="font-handwritten text-xl text-text-muted">编辑模式</span>
-                    <button
-                        onClick={() => setIsManagementMode(!isManagementMode)}
-                        className={`w-12 h-6 rounded-full transition-colors duration-300 relative ${isManagementMode ? 'bg-primary' : 'bg-gray-200'}`}
-                    >
-                        <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${isManagementMode ? 'translate-x-6' : ''}`}></div>
-                    </button>
-                </div>
-                {isManagementMode && (
-                    <div className="ml-4 animate-in fade-in slide-in-from-left-2 duration-300">
-                        <span className="font-handwritten text-lg text-primary/70 bg-white/40 backdrop-blur-sm px-3 py-1 rounded-full border border-white/60 shadow-sm">
-                            浏览记得关闭哦 ✨
-                        </span>
-                    </div>
-                )}
-            </div>
 
-            <main className="relative z-10 pt-40 pb-60 max-w-6xl mx-auto px-6">
-                <header className="text-center mb-32">
-                    <h2 className="font-handwritten text-5xl mb-6 text-primary animate-float">一段美丽的旅程开始了...</h2>
-                    <h3 className="text-5xl md:text-7xl font-serif italic mb-8 text-text-soft leading-tight">宝宝的<br />成长气球之旅</h3>
-                    <p className="max-w-xl mx-auto text-text-muted font-normal text-lg leading-relaxed">
+            <main className="relative z-10 pt-32 md:pt-40 pb-60 max-w-6xl mx-auto px-6">
+                <header className="text-center mb-16 md:mb-32">
+                    <h2 className="font-handwritten text-3xl md:text-5xl mb-6 text-primary animate-float">一段美丽的旅程开始了...</h2>
+                    <h3 className="text-4xl sm:text-5xl md:text-7xl font-serif italic mb-6 md:mb-8 text-text-soft leading-tight">宝宝的<br />成长气球之旅</h3>
+                    <p className="max-w-xl mx-auto text-text-muted font-normal text-base md:text-lg leading-relaxed px-4">
                         在成长的云端漂浮，记录宝贝的每一次欢笑和每一个里程碑。
                     </p>
                 </header>
@@ -246,20 +213,20 @@ const VerticalTimeline: React.FC = () => {
                         const isEven = idx % 2 === 0;
 
                         return (
-                            <div key={m.id || idx} className={`relative flex ${isEven ? 'flex-row-reverse' : ''} items-center justify-between mb-48 w-full group`}>
-                                <div className={`w-5/12 ${isEven ? 'text-left pl-12' : 'text-right pr-12'}`}>
-                                    <span className="text-xl font-handwritten text-primary mb-2 block">{m.date}</span>
-                                    <h4 className="text-3xl font-serif italic mb-4 text-text-soft group-hover:text-primary transition-colors">{m.title}</h4>
-                                    <p className="text-text-muted font-sans text-lg leading-relaxed">{m.description}</p>
+                            <div key={m.id || idx} className={`relative flex flex-col md:flex-row ${isEven ? 'md:flex-row-reverse' : ''} items-center justify-between mb-24 md:mb-48 w-full group`}>
+                                <div className={`w-full md:w-5/12 mb-8 md:mb-0 ${isEven ? 'md:text-left md:pl-12' : 'md:text-right md:pr-12'} text-center px-4`}>
+                                    <span className="text-lg md:text-xl font-handwritten text-primary mb-1 md:mb-2 block">{m.date}</span>
+                                    <h4 className="text-2xl md:text-3xl font-serif italic mb-3 md:mb-4 text-text-soft group-hover:text-primary transition-colors">{m.title}</h4>
+                                    <p className="text-text-muted font-sans text-base md:text-lg leading-relaxed">{m.description}</p>
                                 </div>
 
-                                <div className="absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white shadow-lg z-20 flex items-center justify-center border-2 border-primary/30">
+                                <div className="absolute left-1/2 -translate-x-1/2 top-[calc(100%+12px)] md:top-1/2 md:-translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg z-20 flex items-center justify-center border-2 border-primary/30 hidden md:flex">
                                     <span className="material-symbols-outlined text-primary text-sm">favorite</span>
                                     <div className="absolute inset-0 rounded-full animate-pulse-warm bg-primary/20"></div>
                                 </div>
 
-                                <div className={`w-5/12 ${isEven ? 'pr-12' : 'pl-12'} relative`}>
-                                    <div className={`absolute -top-24 ${isEven ? 'right-12' : 'left-12'} flex gap-2 pointer-events-none`}>
+                                <div className={`w-full md:w-5/12 ${isEven ? 'md:pr-12' : 'md:pl-12'} relative px-4`}>
+                                    <div className={`absolute -top-16 md:-top-24 ${isEven ? 'right-4 md:right-12' : 'left-4 md:left-12'} flex gap-2 pointer-events-none scale-75 md:scale-100`}>
                                         <Balloon color="#f4a29e" size={45} delay="0s" />
                                         <Balloon color="#ffdac1" size={35} delay="0.5s" className="-mt-4" />
                                         <Balloon color="#baffc9" size={40} delay="1.2s" className="-mt-2" />
@@ -271,7 +238,7 @@ const VerticalTimeline: React.FC = () => {
                                         onMouseLeave={handleLongPressEnd}
                                         onTouchStart={() => m.id && handleLongPressStart(m.id)}
                                         onTouchEnd={handleLongPressEnd}
-                                        className={`relative p-3 bg-white shadow-2xl rounded-sm rotate-${isEven ? '2' : '-2'} transition-all duration-700 hover:rotate-0 hover:scale-[1.03] border border-gray-100 group/card ${m.id === newlyAddedId ? 'animate-launch z-50' : ''} ${pressingId === m.id ? 'animate-vibrate cursor-none' : 'cursor-pointer'}`}
+                                        className={`relative p-2 md:p-3 bg-white shadow-2xl rounded-sm rotate-${isEven ? '1 md:2' : '-1 md:-2'} transition-all duration-700 hover:rotate-0 hover:scale-[1.03] border border-gray-100 group/card ${m.id === newlyAddedId ? 'animate-launch z-50' : ''} ${pressingId === m.id ? 'animate-vibrate cursor-none' : 'cursor-pointer'}`}
                                         style={{ animationDelay: m.id === newlyAddedId ? '0s' : `${idx * 0.5}s` }}
                                     >
                                         {pressingId === m.id && (
@@ -286,15 +253,12 @@ const VerticalTimeline: React.FC = () => {
                                             <PhotoGallery
                                                 images={images}
                                                 title={m.title}
-                                                isManagementMode={isManagementMode}
-                                                onEdit={() => { setEditingMilestone(m); setIsEditorOpen(true); }}
-                                                onDelete={() => handleDelete(m.id!)}
                                             />
                                         </div>
-                                        <div className="mt-4 pb-2 text-center">
-                                            <span className="font-handwritten text-3xl text-text-soft italic">{m.title}</span>
+                                        <div className="mt-3 md:mt-4 pb-1 md:pb-2 text-center">
+                                            <span className="font-handwritten text-2xl md:text-3xl text-text-soft italic">{m.title}</span>
                                         </div>
-                                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-4 bg-primary/30 backdrop-blur-sm -rotate-2"></div>
+                                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-10 md:w-12 h-3 md:h-4 bg-primary/30 backdrop-blur-sm -rotate-2"></div>
                                     </div>
                                 </div>
                             </div>
@@ -326,14 +290,6 @@ const VerticalTimeline: React.FC = () => {
                 onClose={() => setIsEditorOpen(false)}
                 onSave={handleSaveMemory}
                 initialData={editingMilestone}
-            />
-
-            <ConfirmModal
-                isOpen={isConfirmOpen}
-                title="撕掉这一页？"
-                message="确定要从绘本里撕掉这一页吗？这段珍贵的记忆将不再显示。"
-                onConfirm={confirmDelete}
-                onCancel={() => setIsConfirmOpen(false)}
             />
         </div>
     );

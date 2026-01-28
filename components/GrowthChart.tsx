@@ -6,6 +6,8 @@ interface GrowthChartProps {
 }
 
 const GrowthChart: React.FC<GrowthChartProps> = ({ records }) => {
+    const [activeIdx, setActiveIdx] = React.useState<number | null>(null);
+
     const data = useMemo(() => {
         return [...records]
             .filter(r => r.height !== undefined || r.weight !== undefined)
@@ -14,9 +16,9 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ records }) => {
 
     if (data.length < 2) {
         return (
-            <div className="flex flex-col items-center justify-center h-48 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/40">
+            <div className="flex flex-col items-center justify-center h-48 md:h-64 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/40">
                 <span className="material-symbols-outlined text-text-muted/40 text-4xl mb-2">analytics</span>
-                <p className="text-text-muted font-sans italic">数据不足，无法生成趋势图</p>
+                <p className="text-text-muted font-sans italic text-sm md:text-base">数据不足，无法生成趋势图</p>
             </div>
         );
     }
@@ -72,17 +74,24 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ records }) => {
     const wCurve = getCurve(wPoints);
 
     return (
-        <div className="w-full overflow-x-auto scrollbar-hide py-4">
-            <svg viewBox={`0 0 ${width} ${height}`} className="w-full min-w-[700px] h-full">
+        <div className="w-full overflow-x-auto scrollbar-hide py-4 -mx-2 px-2">
+            <svg
+                viewBox={`0 0 ${width} ${height}`}
+                className="w-full h-auto select-none"
+                onMouseLeave={() => setActiveIdx(null)}
+            >
                 <defs>
-                    <linearGradient id="grad-h" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#FF94B4" stopOpacity="0.2" />
-                        <stop offset="100%" stopColor="#FF94B4" stopOpacity="0" />
-                    </linearGradient>
-                    <linearGradient id="grad-w" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#94D4FF" stopOpacity="0.2" />
-                        <stop offset="100%" stopColor="#94D4FF" stopOpacity="0" />
-                    </linearGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                        <feOffset dx="0" dy="2" result="offsetblur" />
+                        <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3" />
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
                 </defs>
 
                 {/* Grid Lines */}
@@ -93,10 +102,8 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ records }) => {
                     return (
                         <g key={i}>
                             <line x1={padding} y1={y} x2={width - padding} y2={y} stroke="rgba(0,0,0,0.03)" />
-                            {/* Left Axis (Height) */}
-                            <text x={padding - 10} y={y + 5} textAnchor="end" className="fill-[#FF94B4] text-[10px] font-bold">{valH}cm</text>
-                            {/* Right Axis (Weight) */}
-                            <text x={width - padding + 10} y={y + 5} textAnchor="start" className="fill-[#94D4FF] text-[10px] font-bold">{valW}kg</text>
+                            <text x={padding - 10} y={y + 5} textAnchor="end" className="fill-[#FF94B4] text-[10px] font-bold hidden md:block">{valH}cm</text>
+                            <text x={width - padding + 10} y={y + 5} textAnchor="start" className="fill-[#94D4FF] text-[10px] font-bold hidden md:block">{valW}kg</text>
                         </g>
                     );
                 })}
@@ -105,27 +112,78 @@ const GrowthChart: React.FC<GrowthChartProps> = ({ records }) => {
                 <path d={hCurve} fill="none" stroke="#FF94B4" strokeWidth="4" strokeLinecap="round" className="drop-shadow-md" />
                 <path d={wCurve} fill="none" stroke="#94D4FF" strokeWidth="4" strokeLinecap="round" className="drop-shadow-md" />
 
-                {/* Points */}
-                {hPoints.map((p, i) => (
-                    <g key={`h-${i}`} className="group cursor-pointer">
-                        <circle cx={p.x} cy={p.y} r="5" fill="white" stroke="#FF94B4" strokeWidth="2" className="transition-all group-hover:r-7" />
-                        <text x={p.x} y={p.y - 12} textAnchor="middle" className="fill-text-soft text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                            {p.value}cm
-                        </text>
-                    </g>
-                ))}
-                {wPoints.map((p, i) => (
-                    <g key={`w-${i}`} className="group cursor-pointer">
-                        <circle cx={p.x} cy={p.y} r="5" fill="white" stroke="#94D4FF" strokeWidth="2" className="transition-all group-hover:r-7" />
-                        <text x={p.x} y={p.y - 12} textAnchor="middle" className="fill-text-soft text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                            {p.value}kg
-                        </text>
-                    </g>
-                ))}
+                {/* Vertical Indicator Line */}
+                {activeIdx !== null && (
+                    <line
+                        x1={hPoints[activeIdx]?.x || wPoints[activeIdx]?.x}
+                        y1={padding}
+                        x2={hPoints[activeIdx]?.x || wPoints[activeIdx]?.x}
+                        y2={height - padding}
+                        stroke="rgba(0,0,0,0.1)"
+                        strokeDasharray="4 4"
+                    />
+                )}
 
-                {/* X-Axis Dates */}
+                {/* Interaction Markers & Combined Labels */}
+                {data.map((d, i) => {
+                    const hp = hPoints.find(p => p.date === d.date);
+                    const wp = wPoints.find(p => p.date === d.date);
+                    const x = hp?.x || wp?.x || 0;
+                    const isActive = activeIdx === i;
+
+                    return (
+                        <g
+                            key={i}
+                            onMouseEnter={() => setActiveIdx(i)}
+                            onTouchStart={() => setActiveIdx(i)}
+                            className="cursor-pointer"
+                        >
+                            {/* Hitbox */}
+                            <rect x={x - 15} y={padding} width="30" height={height - 2 * padding} fill="transparent" />
+
+                            {/* Markers */}
+                            {hp && <circle cx={hp.x} cy={hp.y} r={isActive ? 8 : 5} fill="white" stroke="#FF94B4" strokeWidth="3" className="transition-all" />}
+                            {wp && <circle cx={wp.x} cy={wp.y} r={isActive ? 8 : 5} fill="white" stroke="#94D4FF" strokeWidth="3" className="transition-all" />}
+
+                            {/* Combined Floating Label */}
+                            {isActive && (
+                                <g filter="url(#shadow)">
+                                    <rect
+                                        x={x - 70}
+                                        y={Math.min(hp?.y ?? 999, wp?.y ?? 999) - 70}
+                                        width="140"
+                                        height="50"
+                                        rx="12"
+                                        fill="white"
+                                        className="opacity-95"
+                                    />
+                                    <text
+                                        x={x}
+                                        y={Math.min(hp?.y ?? 999, wp?.y ?? 999) - 48}
+                                        textAnchor="middle"
+                                        className="fill-text-soft font-serif italic font-bold text-sm"
+                                    >
+                                        {new Date(d.date).toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })} 记录
+                                    </text>
+                                    <text
+                                        x={x}
+                                        y={Math.min(hp?.y ?? 999, wp?.y ?? 999) - 28}
+                                        textAnchor="middle"
+                                        className="font-sans font-black text-base"
+                                    >
+                                        <tspan fill="#FF94B4">{d.height}cm</tspan>
+                                        <tspan fill="#ccc" dx="4"> / </tspan>
+                                        <tspan fill="#94D4FF" dx="4">{d.weight}kg</tspan>
+                                    </text>
+                                </g>
+                            )}
+                        </g>
+                    );
+                })}
+
+                {/* X-Axis Dates (Base) */}
                 {hPoints.map((p, i) => (
-                    <text key={i} x={p.x} y={height - padding + 25} textAnchor="middle" className="fill-text-muted/60 text-[10px] font-sans">
+                    <text key={i} x={p.x} y={height - padding + 25} textAnchor="middle" className="fill-text-muted/40 text-[10px] font-sans hidden md:block">
                         {new Date(p.date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
                     </text>
                 ))}

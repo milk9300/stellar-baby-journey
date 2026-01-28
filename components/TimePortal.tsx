@@ -28,7 +28,7 @@ const TimePortal: React.FC<TimePortalProps> = ({ onFilterChange, availableYears 
     };
 
     return (
-        <div className="fixed bottom-28 right-10 z-[1100] flex flex-col items-end gap-4">
+        <div className="fixed bottom-24 right-6 md:right-10 md:bottom-32 z-[1100] flex flex-col items-end gap-4">
             {/* Filter Panel */}
             {isOpen && (
                 <div className="bg-white/70 backdrop-blur-2xl p-6 rounded-[32px] shadow-2xl border border-white/80 w-80 animate-in fade-in zoom-in slide-in-from-bottom-4 duration-300">
@@ -83,12 +83,12 @@ const TimePortal: React.FC<TimePortalProps> = ({ onFilterChange, availableYears 
             {/* Main Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl border-2 ${isOpen
+                className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl border-2 ${isOpen
                     ? 'bg-primary border-primary text-white'
                     : 'bg-white/40 backdrop-blur-md border-white/60 text-primary hover:bg-white/60'}`}
                 title="星空导航"
             >
-                <span className={`material-symbols-outlined text-3xl transition-transform duration-500 ${isOpen ? 'rotate-180' : ''}`}>
+                <span className={`material-symbols-outlined text-2xl md:text-3xl transition-transform duration-500 ${isOpen ? 'rotate-180' : ''}`}>
                     {isOpen ? 'close' : 'explore'}
                 </span>
             </button>

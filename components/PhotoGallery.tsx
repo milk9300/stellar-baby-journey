@@ -88,7 +88,12 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
                                 alt={`${title} ${i + 1}`}
                                 className={`w-full h-full object-cover transition-all duration-700 hover:scale-105 ${allowZoom && !isManagementMode ? 'cursor-zoom-in' : ''}`}
                                 src={src}
-                                onClick={() => !isManagementMode && allowZoom && setZoomedIndex(i)}
+                                onClick={(e) => {
+                                    if (!isManagementMode && allowZoom) {
+                                        e.stopPropagation();
+                                        setZoomedIndex(i);
+                                    }
+                                }}
                             />
                         </div>
                     ))
@@ -105,7 +110,10 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
                     {images.map((_, i) => (
                         <button
                             key={i}
-                            onClick={() => setCurrentIndex(i)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setCurrentIndex(i);
+                            }}
                             className={`w-2 h-2 rounded-full shadow-sm transition-all duration-300 ${i === currentIndex ? 'bg-white scale-125 w-4' : 'bg-white/40'
                                 }`}
                         ></button>
@@ -117,13 +125,19 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
             {images.length > 1 && (
                 <>
                     <button
-                        onClick={() => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+                        }}
                         className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/20 text-white opacity-0 group-hover/gallery:opacity-100 transition-opacity flex items-center justify-center hover:bg-black/40 backdrop-blur-sm"
                     >
                         <span className="material-symbols-outlined text-sm">chevron_left</span>
                     </button>
                     <button
-                        onClick={() => setCurrentIndex((prev) => (prev + 1) % images.length)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentIndex((prev) => (prev + 1) % images.length);
+                        }}
                         className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/20 text-white opacity-0 group-hover/gallery:opacity-100 transition-opacity flex items-center justify-center hover:bg-black/40 backdrop-blur-sm"
                     >
                         <span className="material-symbols-outlined text-sm">chevron_right</span>
@@ -155,28 +169,27 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
                     className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-12 animate-in fade-in zoom-in duration-300 cursor-zoom-out"
                     onClick={() => setZoomedIndex(null)}
                 >
-                    <button className="absolute top-8 right-8 text-white/40 hover:text-white transition-all hover:rotate-90 z-[10001]">
-                        <span className="material-symbols-outlined text-5xl">close</span>
+                    <button className="absolute top-4 right-4 md:top-8 md:right-8 text-white/40 hover:text-white transition-all hover:rotate-90 z-[10001]">
+                        <span className="material-symbols-outlined text-3xl md:text-5xl">close</span>
                     </button>
 
-                    {/* Lightbox Navigation */}
+                    {/* Lightbox Navigation - hidden or smaller on mobile */}
                     {images.length > 1 && (
                         <>
                             <button
                                 onClick={handleZoomPrev}
-                                className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white/5 text-white/40 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center group/btn z-[10001]"
+                                className="absolute left-2 md:left-12 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 text-white/40 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center group/btn z-[10001]"
                             >
-                                <span className="material-symbols-outlined text-5xl group-hover/btn:-translate-x-1 transition-transform">chevron_left</span>
+                                <span className="material-symbols-outlined text-3xl md:text-5xl group-hover/btn:-translate-x-1 transition-transform">chevron_left</span>
                             </button>
                             <button
                                 onClick={handleZoomNext}
-                                className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-white/5 text-white/40 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center group/btn z-[10001]"
+                                className="absolute right-2 md:right-12 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 text-white/40 hover:bg-white/10 hover:text-white transition-all flex items-center justify-center group/btn z-[10001]"
                             >
-                                <span className="material-symbols-outlined text-5xl group-hover/btn:translate-x-1 transition-transform">chevron_right</span>
+                                <span className="material-symbols-outlined text-3xl md:text-5xl group-hover/btn:translate-x-1 transition-transform">chevron_right</span>
                             </button>
                         </>
                     )}
-
                     <div className="relative max-w-full max-h-full flex flex-col items-center gap-6" onClick={e => e.stopPropagation()}>
                         <div className="relative animate-in slide-in-from-bottom-4 duration-500">
                             <img
@@ -189,9 +202,9 @@ const PhotoGallery: React.FC<PhotoGalleryProps> = ({
                                 {zoomedIndex + 1} / {images.length}
                             </div>
                         </div>
-                        <div className="flex flex-col items-center gap-1 opacity-60">
-                            <div className="font-serif italic text-white text-3xl tracking-wide">{title}</div>
-                            <div className="font-handwritten text-white/50 text-xl text-center">时光流转，美好永驻</div>
+                        <div className="flex flex-col items-center gap-1 opacity-60 px-4 text-center">
+                            <div className="font-serif italic text-white text-xl md:text-3xl tracking-wide">{title}</div>
+                            <div className="font-handwritten text-white/50 text-base md:text-xl text-center">时光流转，美好永驻</div>
                         </div>
                     </div>
                 </div>,

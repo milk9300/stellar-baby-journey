@@ -99,7 +99,7 @@ const GrowthArchive: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-background-warm pt-32 pb-20 px-6 sm:px-12 relative overflow-hidden">
+        <div className="min-h-screen bg-background-warm pt-24 md:pt-32 pb-20 px-4 md:px-12 relative overflow-hidden">
             {/* Background elements */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
                 <div className="absolute top-20 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
@@ -109,12 +109,12 @@ const GrowthArchive: React.FC = () => {
             <Navbar title="成长档案" />
 
             <div className="max-w-6xl mx-auto relative z-10">
-                <header className="text-center mb-16 relative">
-                    <div className="inline-block px-4 py-1 bg-white/40 backdrop-blur-sm rounded-full text-primary text-sm font-sans mb-4 border border-white/60">
+                <header className="text-center mb-10 md:mb-16 relative">
+                    <div className="inline-block px-4 py-1 bg-white/40 backdrop-blur-sm rounded-full text-primary text-xs md:text-sm font-sans mb-4 border border-white/60">
                         成长历程
                     </div>
-                    <h1 className="font-serif italic text-6xl text-text-soft mb-6 tracking-tight">成长档案</h1>
-                    <p className="text-text-muted text-xl font-sans max-w-2xl mx-auto leading-relaxed">
+                    <h1 className="font-serif italic text-4xl md:text-6xl text-text-soft mb-4 md:mb-6 tracking-tight">成长档案</h1>
+                    <p className="text-text-muted text-lg md:text-xl font-sans max-w-2xl mx-auto leading-relaxed px-4">
                         记录每一个小小的进步，将这些星光般的瞬间串联成最珍贵的回忆。
                     </p>
 
@@ -128,97 +128,97 @@ const GrowthArchive: React.FC = () => {
                 </header>
 
                 {/* Main Visual: Growth Chart */}
-                <section className="mb-16 bg-white/60 backdrop-blur-md rounded-[40px] p-8 md:p-12 shadow-2xl border border-white/80">
-                    <div className="mb-12">
-                        <h2 className="text-3xl font-serif italic text-text-soft">成长趋势</h2>
-                        <p className="text-text-muted mt-2 font-sans">身高与体重的同步增长，见证生命的奇迹。</p>
+                <section className="mb-8 md:mb-16 bg-white/60 backdrop-blur-md rounded-[32px] md:rounded-[40px] p-6 md:p-12 shadow-2xl border border-white/80">
+                    <div className="mb-8 md:mb-12">
+                        <h2 className="text-2xl md:text-3xl font-serif italic text-text-soft">成长趋势</h2>
+                        <p className="text-text-muted mt-2 font-sans text-sm md:text-base">身高与体重的同步增长，见证生命的奇迹。</p>
                     </div>
 
-                    <div className="relative">
+                    <div className="relative h-[300px] md:h-auto">
                         <GrowthChart records={records} />
                     </div>
                 </section>
 
                 {/* Physical Data Cards */}
-                <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-16">
                     {stats.map((stat, idx) => (
-                        <div key={idx} className="bg-white/60 backdrop-blur-md rounded-[32px] p-8 shadow-xl border border-white/80 hover:translate-y-[-8px] transition-all duration-300 group">
-                            <div className={`p-4 rounded-2xl bg-white/80 shadow-inner w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                                <span className={`material-symbols-outlined ${stat.color} text-3xl`}>{stat.icon}</span>
+                        <div key={idx} className="bg-white/60 backdrop-blur-md rounded-[24px] md:rounded-[32px] p-5 md:p-8 shadow-xl border border-white/80 hover:translate-y-[-4px] md:hover:translate-y-[-8px] transition-all duration-300 group">
+                            <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-white/80 shadow-inner w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform`}>
+                                <span className={`material-symbols-outlined ${stat.color} text-2xl md:text-3xl`}>{stat.icon}</span>
                             </div>
-                            <div className="text-text-muted text-sm font-sans mb-1 uppercase tracking-wider">{stat.label}</div>
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-4xl font-serif text-text-soft">{stat.value}</span>
-                                <span className="text-text-muted font-sans font-light">{stat.unit}</span>
+                            <div className="text-text-muted text-[10px] md:text-sm font-sans mb-0.5 md:mb-1 uppercase tracking-wider">{stat.label}</div>
+                            <div className="flex items-baseline gap-0.5 md:gap-1">
+                                <span className="text-2xl md:text-4xl font-serif text-text-soft">{stat.value}</span>
+                                <span className="text-text-muted font-sans text-xs md:font-light">{stat.unit}</span>
                             </div>
-                            <div className="mt-6 pt-4 border-t border-primary/5 text-xs text-text-muted/60 italic font-sans">
+                            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-primary/5 text-[10px] md:text-xs text-text-muted/60 italic font-sans line-clamp-1">
                                 {stat.desc}
                             </div>
                         </div>
                     ))}
                 </section>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-16">
                     {/* Growth Insights */}
-                    <div className="lg:col-span-2 bg-white/60 backdrop-blur-md rounded-[32px] p-8 shadow-xl border border-white/80">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
-                            <h2 className="text-2xl font-serif italic text-text-soft">成长寄语 & 健康贴士</h2>
+                    <div className="lg:col-span-2 bg-white/60 backdrop-blur-md rounded-[32px] p-6 md:p-8 shadow-xl border border-white/80">
+                        <div className="flex items-center gap-3 mb-6 md:mb-8">
+                            <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">auto_awesome</span>
+                            <h2 className="text-xl md:text-2xl font-serif italic text-text-soft">成长寄语 & 健康贴士</h2>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="p-6 bg-primary/5 rounded-3xl border border-primary/10">
-                                <h3 className="font-serif italic text-lg text-primary mb-3 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-sm">favorite</span> 身体发育
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div className="p-5 md:p-6 bg-primary/5 rounded-2xl md:rounded-3xl border border-primary/10">
+                                <h3 className="font-serif italic text-base md:text-lg text-primary mb-2 md:mb-3 flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-xs">favorite</span> 身体发育
                                 </h3>
-                                <p className="text-text-muted leading-relaxed text-sm font-sans">
+                                <p className="text-text-muted leading-relaxed text-xs md:text-sm font-sans">
                                     宝贝目前正处于快速发育期。身高和体重都在理想范围内。
                                     请继续保持均衡的营养摄入，多接触自然光以助于钙质吸收。
                                 </p>
                             </div>
-                            <div className="p-6 bg-blue-400/5 rounded-3xl border border-blue-400/10">
-                                <h3 className="font-serif italic text-lg text-blue-400 mb-3 flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-sm">stars</span> 智力开启
+                            <div className="p-5 md:p-6 bg-blue-400/5 rounded-2xl md:rounded-3xl border border-blue-400/10">
+                                <h3 className="font-serif italic text-base md:text-lg text-blue-400 mb-2 md:mb-3 flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-xs">stars</span> 智力开启
                                 </h3>
-                                <p className="text-text-muted leading-relaxed text-sm font-sans">
+                                <p className="text-text-muted leading-relaxed text-xs md:text-sm font-sans">
                                     这段时间是语言和认知发展的黄金期。建议多给宝贝讲故事，
                                     听听轻柔的古典音乐，这些都会刺激大脑突触的生长。
                                 </p>
                             </div>
                         </div>
 
-                        <div className="mt-8 p-6 bg-white/40 rounded-3xl border border-white/60 italic text-text-muted/80 text-center font-handwritten text-xl leading-relaxed">
+                        <div className="mt-6 md:mt-8 p-4 md:p-6 bg-white/40 rounded-2xl md:rounded-3xl border border-white/60 italic text-text-muted/80 text-center font-handwritten text-lg md:text-xl leading-relaxed">
                             “生命是一场漫长的修行，而你的每一个小步，都是我心中最震撼的雷鸣。”
                         </div>
                     </div>
 
                     {/* Quick Milestones */}
-                    <div className="bg-white/60 backdrop-blur-md rounded-[32px] p-8 shadow-xl border border-white/80">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="material-symbols-outlined text-primary text-3xl">timeline</span>
-                            <h2 className="text-2xl font-serif italic text-text-soft">近期里程碑</h2>
+                    <div className="bg-white/60 backdrop-blur-md rounded-[32px] p-6 md:p-8 shadow-xl border border-white/80">
+                        <div className="flex items-center gap-3 mb-6 md:mb-8">
+                            <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">timeline</span>
+                            <h2 className="text-xl md:text-2xl font-serif italic text-text-soft">近期里程碑</h2>
                         </div>
 
-                        <div className="space-y-6 max-h-[400px] overflow-y-auto pr-2 scrollbar-nice">
+                        <div className="space-y-5 md:space-y-6 max-h-[300px] md:max-h-[400px] overflow-y-auto pr-2 scrollbar-nice">
                             {milestones.length > 0 ? (
                                 [...milestones].reverse().slice(0, 5).map((m, idx) => (
-                                    <div key={m.id || idx} className="flex gap-4 items-start group">
+                                    <div key={m.id || idx} className="flex gap-3 md:gap-4 items-start group">
                                         <div className="relative">
-                                            <div className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 z-10 relative">
-                                                <span className="material-symbols-outlined text-primary text-lg">verified</span>
+                                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 z-10 relative">
+                                                <span className="material-symbols-outlined text-primary text-base md:text-lg">verified</span>
                                             </div>
-                                            {idx !== 4 && <div className="absolute top-10 left-1/2 w-[1px] h-10 bg-primary/10 -translate-x-1/2"></div>}
+                                            {idx !== milestones.slice(0, 5).length - 1 && <div className="absolute top-8 md:top-10 left-1/2 w-[1px] h-8 md:h-10 bg-primary/10 -translate-x-1/2"></div>}
                                         </div>
-                                        <div className="pt-1">
-                                            <div className="text-[10px] font-sans text-primary/60 mb-0.5 uppercase tracking-tighter">{m.date}</div>
-                                            <div className="text-base font-serif text-text-soft group-hover:text-primary transition-colors">{m.title}</div>
+                                        <div className="pt-0.5 md:pt-1">
+                                            <div className="text-[9px] md:text-[10px] font-sans text-primary/60 mb-0.5 uppercase tracking-tighter">{m.date}</div>
+                                            <div className="text-sm md:text-base font-serif text-text-soft group-hover:text-primary transition-colors line-clamp-1">{m.title}</div>
                                         </div>
                                     </div>
                                 ))
                             ) : (
                                 <div className="text-center py-10 opacity-40">
-                                    <span className="material-symbols-outlined text-5xl mb-4">history</span>
-                                    <div className="text-text-muted font-sans">暂无记录</div>
+                                    <span className="material-symbols-outlined text-4xl md:text-5xl mb-3 md:mb-4">history</span>
+                                    <div className="text-text-muted font-sans text-sm">暂无记录</div>
                                 </div>
                             )}
                         </div>
@@ -226,14 +226,14 @@ const GrowthArchive: React.FC = () => {
                 </div>
 
                 {/* History Table */}
-                <section className="bg-white/60 backdrop-blur-md rounded-[32px] p-8 shadow-xl border border-white/80">
-                    <div className="flex items-center gap-3 mb-8">
-                        <span className="material-symbols-outlined text-primary text-3xl">history</span>
-                        <h2 className="text-2xl font-serif italic text-text-soft">历史记录</h2>
+                <section className="bg-white/60 backdrop-blur-md rounded-[32px] p-6 md:p-8 shadow-xl border border-white/80">
+                    <div className="flex items-center gap-3 mb-6 md:mb-8">
+                        <span className="material-symbols-outlined text-primary text-2xl md:text-3xl">history</span>
+                        <h2 className="text-xl md:text-2xl font-serif italic text-text-soft">历史记录</h2>
                     </div>
 
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left font-sans">
+                    <div className="overflow-x-auto -mx-6 px-6">
+                        <table className="w-full text-left font-sans min-w-[600px]">
                             <thead className="text-text-muted text-xs uppercase tracking-widest border-b border-primary/5">
                                 <tr>
                                     <th className="pb-4 font-medium pl-4">日期</th>
@@ -270,7 +270,7 @@ const GrowthArchive: React.FC = () => {
                                                 </div>
                                             </td>
                                             <td className="py-5 pr-4 text-right">
-                                                <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="flex justify-end gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                                     <button
                                                         onClick={() => { setEditingRecord(record); setIsEditorOpen(true); }}
                                                         className="p-2 text-primary hover:bg-primary/10 rounded-full transition-all"
@@ -306,10 +306,10 @@ const GrowthArchive: React.FC = () => {
                     setEditingRecord(null);
                     setIsEditorOpen(true);
                 }}
-                className="fixed bottom-8 left-8 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group md:hidden lg:flex"
+                className="fixed bottom-24 right-6 md:bottom-8 md:left-8 w-12 h-12 md:w-14 md:h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group sm:flex"
                 title="记录新成长"
             >
-                <span className="material-symbols-outlined text-3xl transition-transform group-hover:rotate-90">add</span>
+                <span className="material-symbols-outlined text-2xl md:text-3xl transition-transform group-hover:rotate-90">add</span>
             </button>
 
             {/* Editor Modal */}
