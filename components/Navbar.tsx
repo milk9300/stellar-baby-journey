@@ -70,6 +70,14 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                             <span className="material-symbols-outlined text-xl md:text-xl text-primary/70">monitoring</span>
                             <span className="font-sans text-base">成长档案</span>
                         </Link>
+                        <Link
+                            to="/guide"
+                            onClick={() => setIsMenuOpen(false)}
+                            className={`flex items-center gap-3 px-5 py-3 hover:bg-primary/5 transition-colors ${location.pathname === '/guide' ? 'text-primary font-bold bg-primary/5' : 'text-text-muted'}`}
+                        >
+                            <span className="material-symbols-outlined text-xl md:text-xl text-primary/70">help_outline</span>
+                            <span className="font-sans text-base">使用指南</span>
+                        </Link>
                     </div>
                 )}
             </div>

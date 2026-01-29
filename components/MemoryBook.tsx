@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Milestone } from '../types';
 import { getAllMilestones } from '../utils/storage';
 import Navbar from './Navbar';
@@ -10,6 +10,8 @@ const MemoryBook: React.FC = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [touchStart, setTouchStart] = useState<number | null>(null);
     const [touchEnd, setTouchEnd] = useState<number | null>(null);
+    const sidebarScrollRef = useRef<HTMLDivElement>(null);
+    const sidebarItemsRef = useRef<Map<number, HTMLButtonElement>>(new Map());
 
     // Min swipe distance in pixels
     const minSwipeDistance = 50;
@@ -68,6 +70,17 @@ const MemoryBook: React.FC = () => {
         if (pageIndex > 0) setPageIndex(p => p - 1);
     };
 
+    // Scroll active sidebar item into center view
+    useEffect(() => {
+        const activeItem = sidebarItemsRef.current.get(pageIndex);
+        if (activeItem) {
+            activeItem.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }
+    }, [pageIndex]);
+
     return (
         <div
             className="min-h-screen bg-[#fffaf0] text-stone-800 font-sans overflow-hidden relative selection:bg-orange-100 touch-none"
@@ -118,8 +131,15 @@ const MemoryBook: React.FC = () => {
                         <h2 className="font-serif text-xl tracking-widest text-[#8b5e3c]">时光索引</h2>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto pr-2 scrollbar-hide space-y-4">
+                    <div
+                        ref={sidebarScrollRef}
+                        className="flex-1 overflow-y-auto pr-2 scrollbar-hide space-y-4"
+                    >
                         <button
+                            ref={el => {
+                                if (el) sidebarItemsRef.current.set(0, el);
+                                else sidebarItemsRef.current.delete(0);
+                            }}
                             onClick={() => setPageIndex(0)}
                             className={`w-full text-left p-3 rounded-xl transition-all duration-300 flex items-center gap-3
                                       ${pageIndex === 0 ? 'bg-[#dfc9a6]/20 text-[#8b5e3c] border border-[#dfc9a6]/50 shadow-inner' : 'hover:bg-white/40 text-stone-400 opacity-60'}`}
@@ -137,6 +157,10 @@ const MemoryBook: React.FC = () => {
                             return (
                                 <button
                                     key={m.id}
+                                    ref={el => {
+                                        if (el) sidebarItemsRef.current.set(targetPage, el);
+                                        else sidebarItemsRef.current.delete(targetPage);
+                                    }}
                                     onClick={() => setPageIndex(targetPage)}
                                     className={`w-full text-left p-3 rounded-xl transition-all duration-300 flex flex-col gap-1 group/item
                                               ${isActive ? 'bg-[#dfc9a6]/20 text-[#8b5e3c] border border-[#dfc9a6]/50 shadow-inner translate-x-1' : 'hover:bg-white/40 text-stone-400'}`}

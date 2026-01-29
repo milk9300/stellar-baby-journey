@@ -7,6 +7,7 @@ import GrowthArchive from './components/GrowthArchive';
 import MemoryBook from './components/MemoryBook';
 import MusicPlayer from './components/MusicPlayer';
 import MemoryDetail from './components/MemoryDetail';
+import UserGuide from './components/UserGuide';
 
 const App: React.FC = () => {
     return (
@@ -19,6 +20,7 @@ const App: React.FC = () => {
                 <Route path="/archive" element={<GrowthArchive />} />
                 <Route path="/book" element={<MemoryBook />} />
                 <Route path="/memory/:id" element={<MemoryDetail />} />
+                <Route path="/guide" element={<UserGuide />} />
             </Routes>
         </HashRouter>
     );

@@ -14,6 +14,7 @@ const HorizontalTimeline: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [milestones, setMilestones] = useState<Milestone[]>([]);
     const [scrollProgress, setScrollProgress] = useState(0);
+    const [scrollDistance, setScrollDistance] = useState(0);
     const [filter, setFilter] = useState<{ year: number | null, month: number | null }>({ year: null, month: null });
 
     // Long Press State
@@ -55,6 +56,7 @@ const HorizontalTimeline: React.FC = () => {
         const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
         const progress = scrollWidth > clientWidth ? (scrollLeft / (scrollWidth - clientWidth)) * 100 : 0;
         setScrollProgress(progress);
+        setScrollDistance(scrollLeft);
     };
 
     const handleFilterChange = (year: number | null, month: number | null) => {
@@ -124,7 +126,8 @@ const HorizontalTimeline: React.FC = () => {
             <Navbar title="伊芙琳的全景图" />
 
             <div className="fixed top-20 md:top-24 left-1/2 -translate-x-1/2 z-40 bg-white/40 backdrop-blur-md px-5 py-2 md:px-8 md:py-3 rounded-full border border-white/60 shadow-xl flex items-center gap-3 md:gap-4 scale-90 md:scale-100">
-                <span className="font-handwritten text-lg md:text-xl text-primary whitespace-nowrap">已探索里程: {Math.floor(scrollProgress * 10)}km</span>
+                <span className="font-handwritten text-lg md:text-xl text-primary whitespace-nowrap">已探索里程: {Math.floor(scrollDistance / 10)}km</span>
+
                 <div className="w-20 md:w-32 h-1.5 md:h-2 bg-primary/10 rounded-full relative overflow-hidden">
                     <div className="absolute top-0 left-0 h-full bg-primary transition-all duration-300" style={{ width: `${scrollProgress}%` }}></div>
                 </div>
